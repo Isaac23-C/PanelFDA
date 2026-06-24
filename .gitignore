@@ -1,0 +1,17 @@
+.DS_Store
+__pycache__/
+.venv/
+.venv_registro_a/
+*.pyc
+*.pyo
+*.pyd
+
+# Local exports and oversized source dumps
+entrgable 2_2/ejercicio_mortalidad/covid_19pruebas.sql
+*.zip
+*.docx
+*.pdf
+
+# Generated artifacts that do not need version control
+soap_wsdl_cache.db
+clientes.db
