@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Panel de Modelos Predictivos</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&family=Space+Grotesk:wght@500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="page-shell">
+      <header class="hero">
+        <div class="hero-copy">
+          <p class="eyebrow">Proyecto listo para Vercel</p>
+          <h1>Panel de Modelos Predictivos</h1>
+          <p class="hero-text">
+            Versión web compatible con despliegue estático. Conserva el flujo de alumnos y el
+            panel clínico COVID-19 en una sola interfaz.
+          </p>
+        </div>
+        <div class="hero-stats">
+          <article class="floating-stat">
+            <span>Modelo escolar</span>
+            <strong>Bosque real</strong>
+          </article>
+          <article class="floating-stat">
+            <span>Panel clínico</span>
+            <strong>Simulación explicable</strong>
+          </article>
+        </div>
+      </header>
+
+      <main class="main-panel">
+        <nav class="tabs" aria-label="Modelos">
+          <button class="tab-button is-active" data-tab-target="students-panel" type="button">
+            Modelo Alumnos
+          </button>
+          <button class="tab-button" data-tab-target="clinical-panel" type="button">
+            Modelo Clínico COVID-19
+          </button>
+        </nav>
+
+        <section class="tab-panel is-active" id="students-panel">
+          <div class="panel-card">
+            <div class="section-heading">
+              <div>
+                <p class="section-kicker">Bosque de decisión</p>
+                <h2>Predicción de Rendimiento Escolar</h2>
+              </div>
+              <p class="section-note">
+                Usa la estructura del bosque entrenado en tu script original para emitir el
+                resultado y explicar los votos de cada árbol.
+              </p>
+            </div>
+
+            <form id="student-form" class="grid-form">
+              <label class="field">
+                <span>Horas de Estudio</span>
+                <input id="student-hours" type="number" min="1" max="30" value="14" required />
+              </label>
+              <label class="field">
+                <span>Asistencia (%)</span>
+                <input id="student-attendance" type="number" min="0" max="100" value="50" required />
+              </label>
+              <label class="field">
+                <span>Entregó Tareas</span>
+                <select id="student-homework">
+                  <option value="1">Sí (1)</option>
+                  <option value="0">No (0)</option>
+                </select>
+              </label>
+              <button class="primary-button primary-button--ink" type="submit">
+                Evaluar Alumno
+              </button>
+            </form>
+
+            <div id="student-result-shell" class="result-shell" hidden>
+              <div id="student-result-banner" class="result-banner"></div>
+              <div class="metric-grid metric-grid--compact">
+                <article class="metric-card">
+                  <span>Precisión del modelo</span>
+                  <strong id="student-accuracy">0%</strong>
+                </article>
+                <article class="metric-card">
+                  <span>Filas de entrenamiento</span>
+                  <strong id="student-train-count">0</strong>
+                </article>
+                <article class="metric-card">
+                  <span>Filas de prueba</span>
+                  <strong id="student-test-count">0</strong>
+                </article>
+              </div>
+              <div class="split-layout">
+                <section class="detail-card">
+                  <h3>Votos del bosque</h3>
+                  <p id="student-vote-summary" class="muted-copy"></p>
+                  <div id="student-votes" class="stack-list"></div>
+                </section>
+                <section class="detail-card">
+                  <h3>Dataset base</h3>
+                  <div class="table-scroll">
+                    <table class="data-table" id="student-table">
+                      <thead>
+                        <tr>
+                          <th>Horas</th>
+                          <th>Asistencia</th>
+                          <th>Tareas</th>
+                          <th>Resultado</th>
+                        </tr>
+                      </thead>
+                      <tbody></tbody>
+                    </table>
+                  </div>
+                </section>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="tab-panel" id="clinical-panel">
+          <div class="panel-card">
+            <div class="section-heading">
+              <div>
+                <p class="section-kicker">Dashboard clínico</p>
+                <h2>Pronóstico Clínico COVID-19</h2>
+              </div>
+              <p class="section-note">
+                Simulación funcional inspirada en tus paneles de referencia, con factores
+                interpretables para explicar el riesgo.
+              </p>
+            </div>
+
+            <form id="clinical-form" class="grid-form">
+              <label class="field">
+                <span>Edad</span>
+                <input id="clinical-age" type="number" min="0" max="110" value="45" required />
+              </label>
+              <label class="field">
+                <span>Género</span>
+                <select id="clinical-gender">
+                  <option>Hombre</option>
+                  <option>Mujer</option>
+                </select>
+              </label>
+              <label class="field">
+                <span>Nivel de atención</span>
+                <input id="clinical-level" type="number" min="1" max="5" value="2" required />
+              </label>
+              <label class="field">
+                <span>Diagnóstico</span>
+                <input id="clinical-diagnosis" type="text" value="COVID-19" required />
+              </label>
+              <label class="field">
+                <span>Estado</span>
+                <input id="clinical-state" type="text" value="CIUDAD DE MÉXICO" required />
+              </label>
+              <label class="field">
+                <span>Municipio</span>
+                <input id="clinical-municipality" type="text" value="IZTAPALAPA" required />
+              </label>
+              <label class="field field--wide">
+                <span>Intervención</span>
+                <select id="clinical-intervention">
+                  <option>Ninguna</option>
+                  <option selected>Oxígeno</option>
+                  <option>Intubación</option>
+                  <option>Ventilación Mecánica</option>
+                </select>
+              </label>
+              <button class="primary-button primary-button--mint" type="submit">
+                Generar Pronóstico Clínico
+              </button>
+            </form>
+
+            <div id="clinical-result-shell" class="result-shell" hidden>
+              <div class="metric-grid">
+                <article class="metric-card metric-card--large">
+                  <span>Requerimiento de Tubo</span>
+                  <strong id="clinical-tube">No</strong>
+                </article>
+                <article class="metric-card metric-card--large">
+                  <span>Estancia Estimada</span>
+                  <strong id="clinical-stay">0 días</strong>
+                </article>
+                <article class="metric-card metric-card--large">
+                  <span>Riesgo de Mortalidad</span>
+                  <strong id="clinical-risk">BAJO</strong>
+                </article>
+              </div>
+
+              <section class="detail-card">
+                <div class="progress-head">
+                  <h3>Puntaje clínico</h3>
+                  <strong id="clinical-score-label">0%</strong>
+                </div>
+                <div class="progress-track" aria-hidden="true">
+                  <div id="clinical-progress-fill" class="progress-fill"></div>
+                </div>
+                <p id="clinical-summary" class="muted-copy"></p>
+              </section>
+
+              <div class="split-layout">
+                <section class="detail-card">
+                  <h3>Factores considerados</h3>
+                  <ul id="clinical-factors" class="factor-list"></ul>
+                </section>
+                <section class="detail-card detail-card--visual">
+                  <img
+                    src="./registro_a_arbol_decision.png"
+                    alt="Árbol clínico generado localmente"
+                    class="reference-image"
+                  />
+                  <p class="muted-copy">
+                    Imagen de referencia del árbol clínico generado en tu flujo Python.
+                  </p>
+                </section>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <script src="./app.js"></script>
+  </body>
+</html>
