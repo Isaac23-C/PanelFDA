@@ -81,8 +81,76 @@ const INTERVENTION_PROFILES = {
   "Ventilación Mecánica": { severity: 0.92, tube: true },
 };
 
+const CLINICAL_DIAGNOSIS_OPTIONS = [
+  "COVID-19",
+  "U071 - COVID-19",
+  "SARS-COV-2",
+  "SARS-CoV-2",
+  "Sospecha de SARS-COV-2",
+  "U072 - SOSPECHA DE CORONAVIRUS SARS-COV- 2",
+  "U07S - SOSPECHA DE CORONAVIRUS SARS-COV- 2",
+  "COVID 19",
+  "NEUMONIA POR SARS COV 2",
+  "NEUMONIA POR SARS COV2",
+  "NEUMONIA SARS-CoV-2",
+  "J960 - INSUFICIENCIA RESPIRATORIA AGUDA",
+  "U109 - SÍNDROME INFLAMATORIO MULTISISTÉMICO ASOCIADO CON COVID-19",
+];
+
+const CLINICAL_LOCATION_OPTIONS = {
+  "CIUDAD DE MÉXICO": [
+    "IZTAPALAPA",
+    "TLALPAN",
+    "BENITO JUÁREZ",
+    "TLÁHUAC",
+    "ÁLVARO OBREGÓN",
+    "MILPA ALTA",
+    "IZTACALCO",
+    "CUAUHTÉMOC",
+  ],
+  "ESTADO DE MÉXICO": [
+    "TLALNEPANTLA",
+    "ECATEPEC",
+    "CUAUTITLÁN IZCALLI",
+    "CHALCO",
+    "NEZAHUALCÓYOTL",
+    "IXTAPALUCA",
+    "METEPEC",
+    "VALLE DE CHALCO",
+    "TOLUCA",
+    "NAUCALPAN",
+  ],
+  COAHUILA: [
+    "TORREÓN",
+    "SAN PEDRO",
+    "CIUDAD ACUÑA",
+    "SALTILLO",
+    "MONCLOVA",
+    "SAN PEDRO DE LAS COLONIAS",
+    "PIEDRAS NEGRAS",
+    "SAN JUAN DE SABINAS",
+    "MATAMOROS",
+    "RAMOS ARIZPE",
+  ],
+  ZACATECAS: [
+    "ZACATECAS",
+    "GUADALUPE",
+    "FRESNILLO",
+    "CALERA DE VÍCTOR ROSALES",
+    "COLINAS DEL PADRE",
+    "TABASCO ZACATECAS",
+    "SOMBRERETE",
+    "MORELOS",
+  ],
+  SINALOA: ["GUASAVE", "CULIACÁN", "NAVOLATO", "SALVADOR ALVARADO"],
+  SONORA: ["SAN LUIS RÍO COLORADO", "HERMOSILLO", "AGUA PRIETA", "NAVOJOA", "NACOZARI DE GARCÍA"],
+};
+
 const tabs = document.querySelectorAll(".tab-button");
 const panels = document.querySelectorAll(".tab-panel");
+const clinicalDiagnosisSelect = document.getElementById("clinical-diagnosis");
+const clinicalStateSelect = document.getElementById("clinical-state");
+const clinicalMunicipalitySelect = document.getElementById("clinical-municipality");
 
 tabs.forEach((tab) => {
   tab.addEventListener("click", () => {
@@ -105,6 +173,32 @@ function renderStudentTable() {
       </tr>
     `
   ).join("");
+}
+
+function buildOptions(select, options, selectedValue) {
+  select.innerHTML = options
+    .map(
+      (option) => `<option value="${option}"${option === selectedValue ? " selected" : ""}>${option}</option>`
+    )
+    .join("");
+}
+
+function hydrateClinicalCatalogs() {
+  buildOptions(clinicalDiagnosisSelect, CLINICAL_DIAGNOSIS_OPTIONS, "COVID-19");
+
+  const states = Object.keys(CLINICAL_LOCATION_OPTIONS);
+  buildOptions(clinicalStateSelect, states, "CIUDAD DE MÉXICO");
+  syncMunicipalityOptions("CIUDAD DE MÉXICO", "IZTAPALAPA");
+}
+
+function syncMunicipalityOptions(state, selectedMunicipality) {
+  const municipalities = CLINICAL_LOCATION_OPTIONS[state] || [];
+  const fallbackMunicipality = municipalities[0] || "";
+  buildOptions(
+    clinicalMunicipalitySelect,
+    municipalities,
+    municipalities.includes(selectedMunicipality) ? selectedMunicipality : fallbackMunicipality
+  );
 }
 
 function traverseTree(tree, sample) {
@@ -337,3 +431,8 @@ document.getElementById("clinical-form").addEventListener("submit", (event) => {
 });
 
 renderStudentTable();
+hydrateClinicalCatalogs();
+
+clinicalStateSelect.addEventListener("change", (event) => {
+  syncMunicipalityOptions(event.target.value);
+});
